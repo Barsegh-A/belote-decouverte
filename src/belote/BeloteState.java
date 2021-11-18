@@ -102,7 +102,14 @@ public class BeloteState implements State {
 
         Set<CardStack> currentPlayerHand = player == Player.MAX ? newMaxHand : newMinHand;
 
-        CardStack cs = currentPlayerHand.stream().filter(cardStack -> cardStack.getCard().equals(action)).collect(Collectors.toList()).get(0);
+//        System.out.println(trick.getTrickNumber());
+//        System.out.println(action);
+
+        CardStack cs = currentPlayerHand.stream().filter(cardStack -> {
+            Card card = cardStack.getCard();
+            boolean bool = card != null && card.equals(action);
+            return bool;
+        }).collect(Collectors.toList()).get(0);
         Card newCard = cs.takeCard();
         newUnknownCards.remove(newCard);
 
@@ -118,7 +125,7 @@ public class BeloteState implements State {
             Player lead = newTrick.getWinner();
             int newScore = lead == Player.MAX ? score + newTrick.getScore() : score;
 
-            return new BeloteState(lead, newMaxHand, newMinHand, unknownCards, new Trick(lead, false), newScore);
+            return new BeloteState(lead, newMaxHand, newMinHand, newUnknownCards, new Trick(lead, newTrick.getTrickNumber() + 1), newScore);
         }
     }
 
@@ -162,7 +169,7 @@ public class BeloteState implements State {
         s.add(cs3);
         s.add(cs4);
 
-        BeloteState bs = new BeloteState(Player.MAX, s, s, cards, new Trick(Player.MAX, false), 0);
+        BeloteState bs = new BeloteState(Player.MAX, s, s, cards, new Trick(Player.MAX, 1), 0);
 
         BeloteState bs2 = new BeloteState(bs);
 

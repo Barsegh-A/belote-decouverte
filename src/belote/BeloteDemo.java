@@ -16,8 +16,9 @@ public class BeloteDemo {
         BeloteState beloteState = deal();
 
         TerminalTest terminalTest = new BeloteTerminalTest();
-        Search search = new MinimaxSearch(false);
-        Map<State, Action> strategy = search.findStrategy(beloteState, terminalTest);
+        Search search = new MinimaxSearch(true);
+        Search alphaBeta = new AlphaBetaSearch();
+        Map<State, Action> strategy = alphaBeta.findStrategy(beloteState, terminalTest);
         System.out.println(strategy);
 //        Set<Action> cards = beloteState.getApplicableActions();
 //        Iterator<Action> iterator = cards.iterator();
@@ -36,7 +37,7 @@ public class BeloteDemo {
         Deck deck = new Deck();
         deck.shuffle();
 
-        Trick trick = new Trick(Player.MAX);
+        Trick trick = new Trick(Player.MAX, 1);
         Set<Card> unknownCards = new HashSet<>();
         Set<CardStack> maxHand = new HashSet<>();
         Set<CardStack> minHand = new HashSet<>();

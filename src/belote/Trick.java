@@ -12,24 +12,19 @@ public class Trick{
     private Card minCard;
     private Player lead;
     private int score;
+    private int trickNumber;
 
-    private boolean isLastTrick;
-
-    public Trick(Player lead){
+    public Trick(Player lead, int trickNumber){
         this.lead = lead;
+        this.trickNumber = trickNumber;
     }
 
-    public Trick(Player lead, boolean isLastTrick){
-        this(lead);
-        this.isLastTrick = isLastTrick;
-    }
-
-    public Trick(Card maxCard, Card minCard, Player lead, int score, boolean isLastTrick){
+    public Trick(Card maxCard, Card minCard, Player lead, int score, int trickNumber){
         this.maxCard = maxCard;
         this.minCard = minCard;
         this.lead = lead;
         this.score = score;
-        this.isLastTrick = isLastTrick;
+        this.trickNumber = trickNumber;
     }
 
     public Trick(Trick trick1){
@@ -40,7 +35,7 @@ public class Trick{
         this.minCard = minCard;
         this.lead = trick1.lead;
         this.score = trick1.score;
-        this.isLastTrick = trick1.isLastTrick;
+        this.trickNumber = trick1.trickNumber;
     }
 
     public void play(Player player, Card c){
@@ -78,9 +73,13 @@ public class Trick{
     }
 
     public int getScore(){
+        if(maxCard == null || minCard == null){
+            return 0;
+        }
+
         int score = maxCard.getValue() + minCard.getValue();
 
-        if(isLastTrick){
+        if(isLastTrick()){
             score += 10;
         }
 
@@ -91,17 +90,25 @@ public class Trick{
         return getFirstCard() == null;
     }
 
+    public boolean isLastTrick(){
+        return trickNumber == 16;
+    }
+
+    public int getTrickNumber(){
+        return trickNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Trick)) return false;
         Trick trick = (Trick) o;
-        return getScore() == trick.getScore() && isLastTrick == trick.isLastTrick && Objects.equals(maxCard, trick.maxCard) && Objects.equals(minCard, trick.minCard) && lead == trick.lead;
+        return trickNumber == trick.trickNumber && Objects.equals(maxCard, trick.maxCard) && Objects.equals(minCard, trick.minCard) && lead == trick.lead;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(maxCard, minCard, lead, getScore(), isLastTrick);
+        return Objects.hash(maxCard, minCard, lead, trickNumber);
     }
 
     @Override
@@ -111,7 +118,7 @@ public class Trick{
                 ", minCard=" + minCard +
                 ", lead=" + lead +
                 ", score=" + score +
-                ", isLastTrick=" + isLastTrick +
+                ", trick number=" + trickNumber +
                 '}';
     }
 
@@ -123,7 +130,7 @@ public class Trick{
 
         Player lead = Player.MAX;
 
-        Trick trick = new Trick(lead, false);
+        Trick trick = new Trick(lead, 1);
 
         trick.play(lead, c1);
         trick.play(Player.MIN, c2);
