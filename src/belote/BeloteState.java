@@ -4,7 +4,9 @@ import game.Action;
 import game.Player;
 import game.State;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,17 @@ public class BeloteState implements State {
         this.trick = trick;
         this.score = score;
     }
+
+    public BeloteState(BeloteState state){
+        this.player = state.player;
+        this.trick = new Trick(state.trick);
+        this.score = state.score;
+
+        this.unknownCards = state.unknownCards.stream().map(card -> new Card(card)).collect(Collectors.toSet());
+        this.maxHand = state.maxHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toSet());
+        this.minHand = state.minHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toSet());
+    }
+
 
     @Override
     public Player getPlayer() {
@@ -82,36 +95,31 @@ public class BeloteState implements State {
 
     @Override
     public State getActionResult(Action action) {
-        if(trick.isEmpty()){
-            //clone trick
-            trick.play(player, (Card) action);
-            CardStack cs = getHand(player).stream().filter(cardStack -> cardStack.getCard().equals(action)).collect(Collectors.toList()).get(0);
-            // clone hands
-            Card newCard = cs.takeCard();
-            // clone unknown cards
-            unknownCards.remove(newCard);
+        Trick newTrick = new Trick(trick);
+        Set<Card> newUnknownCards = unknownCards.stream().map(card -> new Card(card)).collect(Collectors.toSet());
+        Set<CardStack> newMaxHand = maxHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toSet());
+        Set<CardStack> newMinHand = minHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toSet());
+
+        Set<CardStack> currentPlayerHand = player == Player.MAX ? newMaxHand : newMinHand;
+
+        CardStack cs = currentPlayerHand.stream().filter(cardStack -> cardStack.getCard().equals(action)).collect(Collectors.toList()).get(0);
+        Card newCard = cs.takeCard();
+        newUnknownCards.remove(newCard);
+
+        if(newTrick.isEmpty()){
+            newTrick.play(player, (Card) action);
             if(player == Player.MAX){
-                return new BeloteState(Player.MIN, getHand(Player.MAX), getHand(Player.MIN), unknownCards, trick, score);
+                return new BeloteState(Player.MIN, newMaxHand, newMinHand, newUnknownCards, newTrick, score);
             } else {
-                return new BeloteState(Player.MAX, getHand(Player.MAX), getHand(Player.MIN), unknownCards, trick, score);
+                return new BeloteState(Player.MAX, newMaxHand, newMinHand, newUnknownCards, newTrick, score);
             }
         } else {
-            //clone trick
-            trick.play(player, (Card) action);
-            CardStack cs = getHand(player).stream().filter(cardStack -> cardStack.getCard().equals(action)).collect(Collectors.toList()).get(0);
-            // clone hands
-            Card newCard = cs.takeCard();
-            // clone unknown cards
-            unknownCards.remove(newCard);
+            newTrick.play(player, (Card) action);
+            Player lead = newTrick.getWinner();
+            int newScore = lead == Player.MAX ? score + newTrick.getScore() : score;
 
-            //clone trick
-            trick.play(player, newCard);
-            Player lead = trick.getWinner();
-            int newScore = lead == Player.MAX ? score + trick.getScore() : score;
-
-            return new BeloteState(lead, getHand(Player.MAX), getHand(Player.MIN), unknownCards, new Trick(lead, false), newScore);
+            return new BeloteState(lead, newMaxHand, newMinHand, unknownCards, new Trick(lead, false), newScore);
         }
-
     }
 
     private Set<CardStack> getHand(Player player){
@@ -133,13 +141,20 @@ public class BeloteState implements State {
 
     }
 
+    public int getScore(){
+        return score;
+    }
+
     public static void main(String[] args) {
         CardStack cs1 = new CardStack(new Card(Suit.DIAMONDS, CardType.ACE), true);
         CardStack cs2 = new CardStack(new Card(Suit.CLUBS, CardType.KING), false);
         CardStack cs3 = new CardStack(null, true);
         CardStack cs4 = new CardStack(new Card(Suit.CLUBS, CardType.SEVEN), false);
 
-
+        Set<Card> cards = new HashSet<>();
+        Card c1 = new Card(Suit.DIAMONDS, CardType.ACE);
+        cards.add(c1);
+        cards.add(new Card(Suit.SPADES, CardType.ACE));
 
         Set<CardStack> s = new HashSet<>();
         s.add(cs1);
@@ -147,9 +162,42 @@ public class BeloteState implements State {
         s.add(cs3);
         s.add(cs4);
 
-        BeloteState bs = new BeloteState(Player.MAX, s, s, new HashSet<>(), new Trick(Player.MAX, false), 0);
+        BeloteState bs = new BeloteState(Player.MAX, s, s, cards, new Trick(Player.MAX, false), 0);
+
+        BeloteState bs2 = new BeloteState(bs);
+
+        System.out.println(bs.unknownCards);
+        System.out.println(bs2.unknownCards);
+
+        c1.setTrump();
+        bs2.unknownCards.forEach(card -> System.out.println(card.isTrump()));
 //        bs.getMaxCards().forEach((card -> System.out.println(card)));
 
-        bs.getCardsWithGivenSuit(Player.MAX, Suit.SPADES).forEach((card -> System.out.println(card)));
+//        bs.getCardsWithGivenSuit(Player.MAX, Suit.SPADES).forEach((card -> System.out.println(card)));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BeloteState)) return false;
+        BeloteState that = (BeloteState) o;
+        return score == that.score && getPlayer() == that.getPlayer() && maxHand.equals(that.maxHand) && minHand.equals(that.minHand) && unknownCards.equals(that.unknownCards) && trick.equals(that.trick);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPlayer(), maxHand, minHand, unknownCards, trick, score);
+    }
+
+    @Override
+    public String toString() {
+        return "BeloteState{" +
+                "player=" + player +
+                ", maxHand=" + maxHand +
+                ", minHand=" + minHand +
+                ", unknownCards=" + unknownCards +
+                ", trick=" + trick +
+                ", score=" + score +
+                '}';
     }
 }

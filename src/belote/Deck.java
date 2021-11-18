@@ -2,8 +2,11 @@ package belote;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Deck {
+    private final int SEED = 1;
+
     // TODO make private
     public ArrayList<Card> deck = new ArrayList<>();
 
@@ -17,7 +20,7 @@ public class Deck {
     }
 
     public void shuffle(){
-        Collections.shuffle(deck);
+        Collections.shuffle(deck, new Random(SEED));
     }
 
 }

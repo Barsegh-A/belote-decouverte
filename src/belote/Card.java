@@ -17,6 +17,12 @@ public class Card implements Comparable<Card>, Action {
         this.value = type.noTrumpValue;
     }
 
+    public Card(Card card1){
+        this(card1.suit, card1.type);
+        this.isTrump = card1.isTrump;
+        this.value = card1.value;
+    }
+
     @Override
     public String toString() {
         return type + " of " + suit;

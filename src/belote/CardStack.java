@@ -1,16 +1,31 @@
 package belote;
 
+import java.util.Objects;
+
 public class CardStack {
     private Card topCard;
     private boolean hasCardBelow;
-
-
-    private Card belowCard;
+    private Card bottomCard;
 
 
     public CardStack(Card topCard, boolean hasCardBelow) {
         this.topCard = topCard;
         this.hasCardBelow = hasCardBelow;
+    }
+
+    public CardStack(Card topCard, Card bottomCard) {
+        this.topCard = topCard;
+        this.bottomCard = bottomCard;
+        this.hasCardBelow = true;
+    }
+
+    public CardStack(CardStack cardStack){
+        Card topCard = cardStack.topCard == null ? null : new Card(cardStack.topCard);
+        Card belowCard = cardStack.bottomCard == null ? null : new Card(cardStack.bottomCard);
+
+        this.topCard = topCard;
+        this.bottomCard = belowCard;
+        this.hasCardBelow = cardStack.hasCardBelow;
     }
 
     public Card getCard(){
@@ -20,11 +35,90 @@ public class CardStack {
     public Card takeCard(){
 //        Card card = topCard;
 
-        topCard = belowCard;
-        belowCard = null;
+        topCard = bottomCard;
+        bottomCard = null;
 
         hasCardBelow = false;
 
         return topCard;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CardStack)) return false;
+        CardStack cardStack = (CardStack) o;
+        // consider removing the equality check for belowCard
+        return hasCardBelow == cardStack.hasCardBelow && Objects.equals(topCard, cardStack.topCard) && Objects.equals(bottomCard, cardStack.bottomCard);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(topCard, hasCardBelow, bottomCard);
+    }
+
+    @Override
+    public String toString() {
+        return "\nCardStack{" +
+                "\nTop card=" + topCard +
+                "\nBottom card=" + bottomCard +
+                '}';
+    }
 }
+
+
+/*
+
+CardStack{
+Top card=EIGHT of SPADES
+Bottom card=EIGHT of DIAMONDS},
+CardStack{
+Top card=KING of SPADES
+Bottom card=NINE of HEARTS},
+CardStack{
+Top card=JACK of DIAMONDS
+Bottom card=JACK of SPADES},
+CardStack{
+Top card=EIGHT of HEARTS
+Bottom card=TEN of HEARTS},
+CardStack{
+Top card=ACE of SPADES
+Bottom card=SEVEN of HEARTS},
+CardStack{
+Top card=KING of HEARTS
+Bottom card=TEN of CLUBS},
+CardStack{
+Top card=JACK of HEARTS
+Bottom card=TEN of SPADES},
+CardStack{
+Top card=ACE of DIAMONDS
+Bottom card=TEN of DIAMONDS}]
+
+
+
+CardStack{
+Top card=ACE of HEARTS
+Bottom card=SEVEN of DIAMONDS},
+CardStack{
+Top card=ACE of CLUBS
+Bottom card=JACK of CLUBS},
+CardStack{
+Top card=QUEEN of HEARTS
+Bottom card=QUEEN of DIAMONDS},
+CardStack{
+Top card=SEVEN of CLUBS
+Bottom card=KING of CLUBS},
+CardStack{
+Top card=NINE of DIAMONDS
+Bottom card=QUEEN of SPADES},
+CardStack{
+Top card=EIGHT of CLUBS
+Bottom card=SEVEN of SPADES},
+CardStack{
+Top card=NINE of CLUBS
+Bottom card=NINE of SPADES},
+CardStack{
+Top card=KING of DIAMONDS
+Bottom card=QUEEN of CLUBS}
+
+ */
