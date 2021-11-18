@@ -1,5 +1,11 @@
 # Default ignored files
 /.idea/
 /out/
-/shelf/
+
+.idea/*
+out/*
+
+/Belote.iml
+
+/.idea/shelf/
 /workspace.xml
