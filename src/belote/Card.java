@@ -4,13 +4,14 @@ import game.Action;
 
 import java.util.Objects;
 
-public class Card implements Comparable<Card>, Action {
+public class Card implements Action {
     private Suit suit;
     private CardType type;
 
     private boolean isTrump;
     private int value;
 
+    // TODO handle the case of trumps suit
     public Card(Suit suit, CardType type) {
         this.suit = suit;
         this.type = type;
@@ -41,11 +42,6 @@ public class Card implements Comparable<Card>, Action {
         value = type.trumpValue;
     }
 
-    @Override
-    public int compareTo(Card o) {
-        return 0;
-    }
-
     public boolean isTrump() {
         return isTrump;
     }
@@ -59,7 +55,7 @@ public class Card implements Comparable<Card>, Action {
         if (this == o) return true;
         if (!(o instanceof Card)) return false;
         Card card = (Card) o;
-        return getSuit() == card.getSuit() && getType() == card.getType();
+        return getSuit() == card.getSuit() && getType() == card.getType(); // consider using value and isTrump as well
     }
 
     @Override

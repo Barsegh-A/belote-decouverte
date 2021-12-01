@@ -12,6 +12,7 @@ public class Deck {
 
     public Deck(){
         for(Suit s: Suit.values()){
+//            if(s != Suit.DIAMONDS) continue;
             for(CardType t: CardType.values()){
                 Card card = new Card(s, t);
                 deck.add(card);

@@ -40,9 +40,9 @@ public class Trick{
 
     public void play(Player player, Card c){
         if(player == Player.MAX) {
-            maxCard = c;
+            maxCard = new Card(c);
         } else {
-            minCard = c;
+            minCard = new Card(c);;
         }
     }
 
@@ -58,7 +58,6 @@ public class Trick{
         } else {
             winner = COMPARATOR.compare(minCard, maxCard) < 0 ? Player.MAX : Player.MIN;
         }
-
 
         return winner;
     }
@@ -108,7 +107,9 @@ public class Trick{
 
     @Override
     public int hashCode() {
-        return Objects.hash(maxCard, minCard, lead, trickNumber);
+        // can including maxCard and minCard affect the result ?
+        return Objects.hash(lead, trickNumber);
+//        return Objects.hash(maxCard, minCard, lead, trickNumber);
     }
 
     @Override
@@ -123,20 +124,16 @@ public class Trick{
     }
 
     public static void main(String[] args) {
-        Card c1 = new Card(Suit.CLUBS, CardType.QUEEN);
-//        c1.setTrump();
-        Card c2 = new Card(Suit.SPADES, CardType.JACK);
-//        c2.setTrump();
+        Trick t1 = new Trick(Player.MIN, 1);
+        t1.play(Player.MIN, new Card(Suit.CLUBS, CardType.JACK));
+        t1.play(Player.MAX, new Card(Suit.DIAMONDS, CardType.JACK));
+        Trick t2 = new Trick(Player.MIN, 1);
+        t2.play(Player.MIN, new Card(Suit.CLUBS, CardType.JACK));
+        t2.play(Player.MAX, new Card(Suit.HEARTS, CardType.JACK));
 
-        Player lead = Player.MAX;
-
-        Trick trick = new Trick(lead, 1);
-
-        trick.play(lead, c1);
-        trick.play(Player.MIN, c2);
-
-        System.out.println(trick.getWinner());;
-
+        System.out.println(t1.hashCode());
+        System.out.println(t2.hashCode());
+        System.out.println(t1.equals(t2));
 
     }
 }

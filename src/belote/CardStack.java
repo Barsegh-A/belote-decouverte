@@ -4,41 +4,42 @@ import java.util.Objects;
 
 public class CardStack {
     private Card topCard;
-    private boolean hasCardBelow;
+//    private boolean hasCardBelow;
     private Card bottomCard;
 
 
     public CardStack(Card topCard, boolean hasCardBelow) {
         this.topCard = topCard;
-        this.hasCardBelow = hasCardBelow;
+//        this.hasCardBelow = hasCardBelow;
     }
 
     public CardStack(Card topCard, Card bottomCard) {
         this.topCard = topCard;
         this.bottomCard = bottomCard;
-        this.hasCardBelow = true;
+//        this.hasCardBelow = bottomCard == null ? false : true;
     }
 
     public CardStack(CardStack cardStack){
+        // reconsider this approach
         Card topCard = cardStack.topCard == null ? null : new Card(cardStack.topCard);
         Card belowCard = cardStack.bottomCard == null ? null : new Card(cardStack.bottomCard);
 
         this.topCard = topCard;
         this.bottomCard = belowCard;
-        this.hasCardBelow = cardStack.hasCardBelow;
+//        this.hasCardBelow = cardStack.hasCardBelow;
     }
 
     public Card getCard(){
         return topCard;
     }
 
+    // returns the newly opened card
     public Card takeCard(){
-//        Card card = topCard;
 
         topCard = bottomCard;
         bottomCard = null;
 
-        hasCardBelow = false;
+//        hasCardBelow = false;
 
         return topCard;
     }
@@ -49,12 +50,16 @@ public class CardStack {
         if (!(o instanceof CardStack)) return false;
         CardStack cardStack = (CardStack) o;
         // consider removing the equality check for belowCard
-        return hasCardBelow == cardStack.hasCardBelow && Objects.equals(topCard, cardStack.topCard) && Objects.equals(bottomCard, cardStack.bottomCard);
+        boolean topCardsEquality = Objects.equals(topCard, cardStack.topCard);
+        boolean bottomCardsEquality = Objects.equals(bottomCard, cardStack.bottomCard);
+        return /*hasCardBelow == cardStack.hasCardBelow &&*/ topCardsEquality && bottomCardsEquality;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(topCard, hasCardBelow, bottomCard);
+        // FIXME use appropriate hashcode
+//        return Objects.hash(topCard, bottomCard);
+        return 0;//Objects.hash(topCard, hasCardBelow, bottomCard);
     }
 
     @Override
@@ -63,6 +68,56 @@ public class CardStack {
                 "\nTop card=" + topCard +
                 "\nBottom card=" + bottomCard +
                 '}';
+    }
+
+
+
+    public static void main(String[] args) {
+        // Case 1 Both Card Stack contain 2 cards
+        CardStack cs1 = new CardStack(new Card(Suit.SPADES, CardType.JACK), new Card(Suit.SPADES, CardType.QUEEN));
+        CardStack cs2 = new CardStack(new Card(Suit.SPADES, CardType.JACK), new Card(Suit.DIAMONDS, CardType.QUEEN));
+
+//        System.out.println(cs1.hashCode());
+//        System.out.println(cs2.hashCode());
+//        System.out.println(cs1.equals(cs2));
+
+        // Case 2: 1 && 2
+
+        cs1 = new CardStack(new Card(Suit.SPADES, CardType.JACK), new Card(Suit.DIAMONDS, CardType.QUEEN));
+        cs2 = new CardStack(new Card(Suit.SPADES, CardType.JACK), null);
+
+//        System.out.println(cs1.hashCode());
+//        System.out.println(cs2.hashCode());
+//        System.out.println(cs1.equals(cs2));
+
+        // Case 3: 1 & 1
+
+        cs1 = new CardStack(new Card(Suit.HEARTS, CardType.JACK), null);
+        cs2 = new CardStack(new Card(Suit.HEARTS, CardType.KING), null);
+
+//        System.out.println(cs1.hashCode());
+//        System.out.println(cs2.hashCode());
+//        System.out.println(cs1.equals(cs2));
+
+        // Case 4: 1 & 0
+
+        cs1 = new CardStack(new Card(Suit.HEARTS, CardType.JACK), null);
+        cs2 = new CardStack(null, null);
+
+//        System.out.println(cs1.hashCode());
+//        System.out.println(cs2.hashCode());
+//        System.out.println(cs1.equals(cs2));
+
+        // Case 5 0 & 0
+
+        cs1 = new CardStack(null, null);
+        cs2 = new CardStack(null, null);
+
+//        System.out.println(cs1.hashCode());
+//        System.out.println(cs2.hashCode());
+//        System.out.println(cs1.equals(cs2));
+
+
     }
 }
 
