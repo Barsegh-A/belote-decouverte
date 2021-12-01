@@ -33,6 +33,10 @@ public class CardStack {
         return topCard;
     }
 
+    public boolean isEmpty(){
+        return topCard == null;
+    }
+
     // returns the newly opened card
     public Card takeCard(){
 
