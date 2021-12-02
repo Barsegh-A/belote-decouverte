@@ -8,15 +8,20 @@ public class BeloteDemo {
 
     public static void main(String[] args) {
         BeloteState beloteState = deal();
+        Action a = beloteState.getApplicableActions().iterator().next();
 
-        TerminalTest terminalTest = new BeloteTerminalTest();
-        Search search = new MinimaxSearch(false);
-        Search alphaBeta = new AlphaBetaSearch(false);
-        Map<State, Action> strategy = search.findStrategy(beloteState, terminalTest);
-
-        System.out.println(alphaBeta.getNumberOfStates());
+        while(a != null){
+            beloteState = (BeloteState) beloteState.getActionResult(a);
+            a = beloteState.getApplicableActions().iterator().next();
+        }
 
 
+//        TerminalTest terminalTest = new BeloteTerminalTest();
+//        Search search = new MinimaxSearch(false);
+//        Search alphaBeta = new AlphaBetaSearch(false);
+//        Map<State, Action> strategy = search.findStrategy(beloteState, terminalTest);
+//
+//        System.out.println(alphaBeta.getNumberOfStates());
 
     }
 
@@ -45,7 +50,6 @@ public class BeloteDemo {
         }
 
         BeloteState beloteState = new BeloteState(Player.MAX, maxHand, minHand, unknownCards, trick, 0);
-//        System.out.println(beloteState);
 
         return beloteState;
     }

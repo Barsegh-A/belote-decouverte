@@ -186,13 +186,13 @@ public class BeloteState implements State {
                 '}';
     }
 
-    public static boolean areTheSame(List<CardStack> l1, List<CardStack> l2){
+    private static boolean areTheSame(List<CardStack> l1, List<CardStack> l2){
 
 
         Set<CardStack> s1 = l1.stream().filter(cardStack -> !cardStack.isEmpty()).collect(Collectors.toSet());
         Set<CardStack> s2 = l2.stream().filter(cardStack -> !cardStack.isEmpty()).collect(Collectors.toSet());
 
-        Iterator<CardStack> iterator = l1.iterator();
+        Iterator<CardStack> iterator = s1.iterator();
 
         while(iterator.hasNext()){
             CardStack current = iterator.next();
@@ -204,6 +204,22 @@ public class BeloteState implements State {
         }
 
         return s2.isEmpty();
+    }
+
+
+    public static void main(String[] args) {
+        CardStack cs1 = new CardStack(new Card(Suit.CLUBS, CardType.SEVEN), new Card(Suit.CLUBS, CardType.EIGHT));
+        CardStack cs2 = new CardStack(new Card(Suit.CLUBS, CardType.NINE), new Card(Suit.CLUBS, CardType.TEN));
+        CardStack cs5 = new CardStack(null, null);
+
+        List<CardStack> l1 = List.of(cs1, cs2, cs5);
+
+        CardStack cs3 = new CardStack(new Card(Suit.CLUBS, CardType.SEVEN), new Card(Suit.CLUBS, CardType.EIGHT));
+        CardStack cs4 = new CardStack(new Card(Suit.CLUBS, CardType.NINE), new Card(Suit.CLUBS, CardType.TEN));
+
+        List<CardStack> l2 = List.of(cs4, cs3);
+
+        System.out.println(areTheSame(l1, l2));
     }
 
 }
