@@ -87,4 +87,8 @@ public class MinimaxSearchVersionTwo implements Search {
     public int getNumberOfStates() {
         return generatedStates;
     }
+
+    public int getValue(State state){
+        return minimaxValues.get(state);
+    }
 }

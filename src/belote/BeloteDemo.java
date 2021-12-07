@@ -6,39 +6,53 @@ import java.util.*;
 
 public class BeloteDemo {
 
+    public static final Suit TRUMP = Suit.SPADES;
+
     public static void main(String[] args) {
-        BeloteState beloteState = deal(3);
+        int numberOfSuits = 2;
+
+        BeloteState beloteState = deal(numberOfSuits);
+        TerminalTest terminalTest = new BeloteTerminalTest();
 
         System.out.println(beloteState);
 
-        TerminalTest terminalTest = new BeloteTerminalTest();
-        Search search = new MinimaxSearch(true);
-        Search alphaBeta = new AlphaBetaSearch(true);
-        Map<State, Action> strategy = alphaBeta.findStrategy(beloteState, terminalTest);
+        Search minimaxSearch = new MinimaxSearch(true);
+        Map<State, Action> minimaxStrategy = solve(minimaxSearch, terminalTest, beloteState);
 
-        System.out.println(alphaBeta.getNumberOfStates());
-        System.out.println(strategy.keySet().size());
+        System.out.println("#### Minimax Search on " + numberOfSuits + " suit deck.");
+        printStats(minimaxSearch, minimaxStrategy);
+        System.out.println("Minimax Value for the initial state: " + minimaxSearch.getValue(beloteState));
 
-        // A-B Non-Opt, 16
-        //45238
-        //4738
 
-        // A-B Opt, 16
-        //5958
-        //5622
+        Search alphaBetaSearch = new AlphaBetaSearch(true);
+        Map<State, Action> alphaBetaStrategy = solve(alphaBetaSearch, terminalTest, beloteState);
+
+        System.out.println("#### Alpha-Beta Search on " + numberOfSuits + " suit deck.");
+        printStats(alphaBetaSearch, alphaBetaStrategy);
+        System.out.println("Minimax Value for the initial state: " + alphaBetaSearch.getValue(beloteState));
+
+        /*
         while (!terminalTest.isTerminal(beloteState)){
-            Action a = strategy.get(beloteState);
+            Action a = alphaBetaStrategy.get(beloteState);
             System.out.println(beloteState.getPlayer() + ": " + a);
             beloteState = (BeloteState) beloteState.getActionResult(a);
         }
 
         System.out.println(beloteState.getScore());
-
+        */
 
     }
 
+    private static Map<State, Action> solve(Search search, TerminalTest terminalTest, BeloteState initialState){
+        return search.findStrategy(initialState, terminalTest);
+    }
 
-    public static BeloteState deal(int numberOfSuits) {
+    private static void printStats(Search search, Map<State, Action> strategy){
+        System.out.println("Number of states generated during execution: " + search.getNumberOfStates());
+        System.out.println("Number of states in strategy: " + strategy.keySet().size());
+    }
+
+    private static BeloteState deal(int numberOfSuits) {
         Deck deck = new Deck(numberOfSuits);
         deck.shuffle();
 

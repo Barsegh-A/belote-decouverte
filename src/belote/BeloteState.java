@@ -7,9 +7,9 @@ import game.State;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BeloteState implements State {
+import static belote.BeloteDemo.TRUMP;
 
-    public static final Suit TRUMP = Suit.CLUBS;
+public class BeloteState implements State {
     public static final CardComparator COMPARATOR = new CardComparator();
 
     private final Player player;

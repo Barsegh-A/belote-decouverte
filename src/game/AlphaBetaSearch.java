@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class AlphaBetaSearch implements Search{
 	private int numberOfStates;
-	Map<State, Integer> minimaxValues;
+	private Map<State, Integer> minimaxValues;
 	private boolean isOptimized;
 
 	public AlphaBetaSearch(){
@@ -115,5 +115,9 @@ public class AlphaBetaSearch implements Search{
 
 	public int getNumberOfStates(){
 		return numberOfStates;
+	}
+
+	public int getValue(State state){
+		return minimaxValues.get(state);
 	}
 }
