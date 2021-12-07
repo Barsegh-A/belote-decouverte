@@ -28,16 +28,28 @@ public class MinimaxSearch implements Search{
 			return minimaxValues.get(state);
 		}
 
+		numberOfStates++;
 		if(terminalTest.isTerminal(state)){
-			return terminalTest.utility(state);
+			int utility = terminalTest.utility(state);
+			minimaxValues.put(state, utility);
+			return utility;
 		}
 
 		int v = Integer.MIN_VALUE;
 		Action move = null;
 
 		for(Action a: state.getApplicableActions()){
-			numberOfStates++;
-			int v2 = minValue(state.getActionResult(a), terminalTest, strategy);
+
+			State nextState = state.getActionResult(a);
+			Player nextPlayer = nextState.getPlayer();
+			int v2;
+
+			if(nextPlayer == Player.MAX){
+				v2 = maxValue(nextState, terminalTest, strategy);
+			}else {
+				v2 = minValue(nextState, terminalTest, strategy);
+			}
+
 			if(v2 > v){
 				v = v2;
 				move = a;
@@ -58,16 +70,29 @@ public class MinimaxSearch implements Search{
 			return minimaxValues.get(state);
 		}
 
+		numberOfStates++;
 		if(terminalTest.isTerminal(state)) {
-			return terminalTest.utility(state);
+			int utility = terminalTest.utility(state);
+			minimaxValues.put(state, utility);
+			return utility;
 		}
 
 		int v = Integer.MAX_VALUE;
 		Action move = null;
 
 		for(Action a: state.getApplicableActions()){
-			numberOfStates++;
-			int v2 = maxValue(state.getActionResult(a), terminalTest, strategy);
+
+
+			State nextState = state.getActionResult(a);
+			Player nextPlayer = nextState.getPlayer();
+			int v2;
+
+			if(nextPlayer == Player.MAX){
+				v2 = maxValue(nextState, terminalTest, strategy);
+			}else {
+				v2 = minValue(nextState, terminalTest, strategy);
+			}
+
 			if(v2 < v){
 				v = v2;
 				move = a;

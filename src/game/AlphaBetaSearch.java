@@ -39,7 +39,17 @@ public class AlphaBetaSearch implements Search{
 		Action move = null;
 
 		for(Action a: state.getApplicableActions()){
-			int v2 = minValue(state.getActionResult(a), terminalTest, strategy, alpha, beta);
+
+			State nextState = state.getActionResult(a);
+			Player nextPlayer = nextState.getPlayer();
+			int v2;
+
+			if(nextPlayer == Player.MAX){
+				v2 = maxValue(nextState, terminalTest, strategy, alpha, beta);
+			}else {
+				v2 = minValue(nextState, terminalTest, strategy, alpha, beta);
+			}
+
 			if(v2 > v){
 				v = v2;
 				move = a;
@@ -73,7 +83,16 @@ public class AlphaBetaSearch implements Search{
 		Action move = null;
 
 		for(Action a: state.getApplicableActions()){
-			int v2 = maxValue(state.getActionResult(a), terminalTest, strategy, alpha, beta);
+			State nextState = state.getActionResult(a);
+			Player nextPlayer = nextState.getPlayer();
+			int v2;
+
+			if(nextPlayer == Player.MAX){
+				v2 = maxValue(nextState, terminalTest, strategy, alpha, beta);
+			}else {
+				v2 = minValue(nextState, terminalTest, strategy, alpha, beta);
+			}
+
 			if(v2 < v){
 				v = v2;
 				move = a;

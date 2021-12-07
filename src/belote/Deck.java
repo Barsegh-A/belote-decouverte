@@ -12,7 +12,7 @@ public class Deck {
 
     public Deck(){
         for(Suit s: Suit.values()){
-//            if(s != Suit.DIAMONDS) continue;
+            if(s != Suit.DIAMONDS && s != Suit.SPADES) continue;
             for(CardType t: CardType.values()){
                 Card card = new Card(s, t);
                 deck.add(card);

@@ -4,27 +4,24 @@ import game.Action;
 import game.Player;
 import game.State;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BeloteState implements State {
 
-    public static final Suit TRUMP = Suit.DIAMONDS;
+    public static final Suit TRUMP = Suit.CLUBS;
     public static final CardComparator COMPARATOR = new CardComparator();
 
     private final Player player;
 
-    private final Set<CardStack> maxHand;
-    private final Set<CardStack> minHand;
+    private final List<CardStack> maxHand;
+    private final List<CardStack> minHand;
     private final Set<Card> unknownCards;
     private final Trick trick;
     private final int score;
 
 
-    public BeloteState(Player player, Set<CardStack> maxHand, Set<CardStack> minHand, Set<Card> unknownCards, Trick trick, int score) {
+    public BeloteState(Player player, List<CardStack> maxHand, List<CardStack> minHand, Set<Card> unknownCards, Trick trick, int score) {
         this.player = player;
         this.maxHand = maxHand;
         this.minHand = minHand;
@@ -32,17 +29,6 @@ public class BeloteState implements State {
         this.trick = trick;
         this.score = score;
     }
-
-    public BeloteState(BeloteState state){
-        this.player = state.player;
-        this.trick = new Trick(state.trick);
-        this.score = state.score;
-
-        this.unknownCards = state.unknownCards.stream().map(card -> new Card(card)).collect(Collectors.toSet());
-        this.maxHand = state.maxHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toSet());
-        this.minHand = state.minHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toSet());
-    }
-
 
     @Override
     public Player getPlayer() {
@@ -95,42 +81,47 @@ public class BeloteState implements State {
 
     @Override
     public State getActionResult(Action action) {
+
         Trick newTrick = new Trick(trick);
         Set<Card> newUnknownCards = unknownCards.stream().map(card -> new Card(card)).collect(Collectors.toSet());
-        Set<CardStack> newMaxHand = maxHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toSet());
-        Set<CardStack> newMinHand = minHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toSet());
+        List<CardStack> newMaxHand = maxHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toList());
+        List<CardStack> newMinHand = minHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toList());
 
-        Set<CardStack> currentPlayerHand = player == Player.MAX ? newMaxHand : newMinHand;
+        List<CardStack> currentPlayerHand = player == Player.MAX ? newMaxHand : newMinHand;
 
-//        System.out.println(trick.getTrickNumber());
-//        System.out.println(action);
-
+        // TODO consider a better way to find from which card stack to play
         CardStack cs = currentPlayerHand.stream().filter(cardStack -> {
             Card card = cardStack.getCard();
-            boolean bool = card != null && card.equals(action);
+            boolean bool = Objects.equals(card, action);
             return bool;
         }).collect(Collectors.toList()).get(0);
+
         Card newCard = cs.takeCard();
         newUnknownCards.remove(newCard);
+
+        BeloteState beloteState;
 
         if(newTrick.isEmpty()){
             newTrick.play(player, (Card) action);
             if(player == Player.MAX){
-                return new BeloteState(Player.MIN, newMaxHand, newMinHand, newUnknownCards, newTrick, score);
+                beloteState = new BeloteState(Player.MIN, newMaxHand, newMinHand, newUnknownCards, newTrick, score);
+                return beloteState;
             } else {
-                return new BeloteState(Player.MAX, newMaxHand, newMinHand, newUnknownCards, newTrick, score);
+                beloteState = new BeloteState(Player.MAX, newMaxHand, newMinHand, newUnknownCards, newTrick, score);
+                return beloteState;
             }
         } else {
             newTrick.play(player, (Card) action);
             Player lead = newTrick.getWinner();
             int newScore = lead == Player.MAX ? score + newTrick.getScore() : score;
 
-            return new BeloteState(lead, newMaxHand, newMinHand, newUnknownCards, new Trick(lead, newTrick.getTrickNumber() + 1), newScore);
+            beloteState = new BeloteState(lead, newMaxHand, newMinHand, newUnknownCards, new Trick(lead, newTrick.getTrickNumber() + 1), newScore);
+            return beloteState;
         }
     }
 
-    private Set<CardStack> getHand(Player player){
-        Set<CardStack> hand = player == Player.MAX ? maxHand : minHand;
+    public List<CardStack> getHand(Player player){
+        List<CardStack> hand = player == Player.MAX ? maxHand : minHand;
         return hand;
     }
 
@@ -148,39 +139,12 @@ public class BeloteState implements State {
 
     }
 
-    public int getScore(){
-        return score;
+    public Trick getTrick(){
+        return trick;
     }
 
-    public static void main(String[] args) {
-        CardStack cs1 = new CardStack(new Card(Suit.DIAMONDS, CardType.ACE), true);
-        CardStack cs2 = new CardStack(new Card(Suit.CLUBS, CardType.KING), false);
-        CardStack cs3 = new CardStack(null, true);
-        CardStack cs4 = new CardStack(new Card(Suit.CLUBS, CardType.SEVEN), false);
-
-        Set<Card> cards = new HashSet<>();
-        Card c1 = new Card(Suit.DIAMONDS, CardType.ACE);
-        cards.add(c1);
-        cards.add(new Card(Suit.SPADES, CardType.ACE));
-
-        Set<CardStack> s = new HashSet<>();
-        s.add(cs1);
-        s.add(cs2);
-        s.add(cs3);
-        s.add(cs4);
-
-        BeloteState bs = new BeloteState(Player.MAX, s, s, cards, new Trick(Player.MAX, 1), 0);
-
-        BeloteState bs2 = new BeloteState(bs);
-
-        System.out.println(bs.unknownCards);
-        System.out.println(bs2.unknownCards);
-
-        c1.setTrump();
-        bs2.unknownCards.forEach(card -> System.out.println(card.isTrump()));
-//        bs.getMaxCards().forEach((card -> System.out.println(card)));
-
-//        bs.getCardsWithGivenSuit(Player.MAX, Suit.SPADES).forEach((card -> System.out.println(card)));
+    public int getScore(){
+        return score;
     }
 
     @Override
@@ -188,12 +152,13 @@ public class BeloteState implements State {
         if (this == o) return true;
         if (!(o instanceof BeloteState)) return false;
         BeloteState that = (BeloteState) o;
-        return score == that.score && getPlayer() == that.getPlayer() && maxHand.equals(that.maxHand) && minHand.equals(that.minHand) && unknownCards.equals(that.unknownCards) && trick.equals(that.trick);
+
+        return score == that.score && getPlayer() == that.getPlayer() && areTheSame(maxHand, that.maxHand) && areTheSame(minHand, that.minHand) && trick.equals(that.trick);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPlayer(), maxHand, minHand, unknownCards, trick, score);
+        return Objects.hash(getPlayer(), maxHand, minHand, trick, score);
     }
 
     @Override
@@ -207,4 +172,41 @@ public class BeloteState implements State {
                 ", score=" + score +
                 '}';
     }
+
+    private static boolean areTheSame(List<CardStack> l1, List<CardStack> l2){
+
+
+        Set<CardStack> s1 = l1.stream().filter(cardStack -> !cardStack.isEmpty()).collect(Collectors.toSet());
+        Set<CardStack> s2 = l2.stream().filter(cardStack -> !cardStack.isEmpty()).collect(Collectors.toSet());
+
+        Iterator<CardStack> iterator = s1.iterator();
+
+        while(iterator.hasNext()){
+            CardStack current = iterator.next();
+            if(!s2.contains(current)){
+                return false;
+            }else {
+                s2.remove(current);
+            }
+        }
+
+        return s2.isEmpty();
+    }
+
+
+    public static void main(String[] args) {
+        CardStack cs1 = new CardStack(new Card(Suit.CLUBS, CardType.SEVEN), new Card(Suit.CLUBS, CardType.EIGHT));
+        CardStack cs2 = new CardStack(new Card(Suit.CLUBS, CardType.NINE), new Card(Suit.CLUBS, CardType.TEN));
+        CardStack cs5 = new CardStack(null, null);
+
+        List<CardStack> l1 = List.of(cs1, cs2, cs5);
+
+        CardStack cs3 = new CardStack(new Card(Suit.CLUBS, CardType.SEVEN), new Card(Suit.CLUBS, CardType.EIGHT));
+        CardStack cs4 = new CardStack(new Card(Suit.CLUBS, CardType.NINE), new Card(Suit.CLUBS, CardType.TEN));
+
+        List<CardStack> l2 = List.of(cs4, cs3);
+
+        System.out.println(areTheSame(l1, l2));
+    }
+
 }

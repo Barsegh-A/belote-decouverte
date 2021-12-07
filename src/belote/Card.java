@@ -55,7 +55,7 @@ public class Card implements Action {
         if (this == o) return true;
         if (!(o instanceof Card)) return false;
         Card card = (Card) o;
-        return getSuit() == card.getSuit() && getType() == card.getType(); // consider using value and isTrump as well
+        return getSuit() == card.getSuit() && getType() == card.getType() && getValue() == card.getValue() && isTrump() == card.isTrump();
     }
 
     @Override

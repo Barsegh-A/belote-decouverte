@@ -33,6 +33,10 @@ public class CardStack {
         return topCard;
     }
 
+    public boolean isEmpty(){
+        return topCard == null;
+    }
+
     // returns the newly opened card
     public Card takeCard(){
 
@@ -57,9 +61,7 @@ public class CardStack {
 
     @Override
     public int hashCode() {
-        // FIXME use appropriate hashcode
-//        return Objects.hash(topCard, bottomCard);
-        return 0;//Objects.hash(topCard, hasCardBelow, bottomCard);
+        return Objects.hash(topCard, bottomCard);
     }
 
     @Override

@@ -107,9 +107,7 @@ public class Trick{
 
     @Override
     public int hashCode() {
-        // can including maxCard and minCard affect the result ?
-        return Objects.hash(lead, trickNumber);
-//        return Objects.hash(maxCard, minCard, lead, trickNumber);
+        return Objects.hash(maxCard, minCard, lead, trickNumber);
     }
 
     @Override
