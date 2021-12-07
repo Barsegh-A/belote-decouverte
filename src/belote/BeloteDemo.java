@@ -12,7 +12,7 @@ public class BeloteDemo {
     public static void main(String[] args) {
 
         BeloteState beloteState = deal(NUMBER_OF_SUITS);
-        TerminalTest terminalTest = new BeloteTerminalTest();
+        TerminalTest terminalTest = new BeloteTerminalTest(true);
 
         System.out.println(beloteState);
 
