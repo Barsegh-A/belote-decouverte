@@ -8,7 +8,7 @@ import java.util.Random;
 import static belote.BeloteDemo.TRUMP;
 
 public class Deck {
-    private final int SEED = 13;
+    private final int SEED = 32;
 
     private int numberOfSuites;
     private ArrayList<Card> deck = new ArrayList<>();

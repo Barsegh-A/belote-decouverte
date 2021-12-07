@@ -4,6 +4,7 @@ import game.Player;
 
 import java.util.Objects;
 
+import static belote.BeloteDemo.NUMBER_OF_SUITS;
 import static belote.BeloteState.COMPARATOR;
 
 public class Trick{
@@ -28,7 +29,6 @@ public class Trick{
     }
 
     public Trick(Trick trick1){
-//        this(null, null, trick1.lead, trick1.score, trick1.isLastTrick);
         Card maxCard = trick1.maxCard == null ? null : new Card(trick1.maxCard);
         Card minCard = trick1.minCard == null ? null : new Card(trick1.minCard);
         this.maxCard = maxCard;
@@ -90,7 +90,7 @@ public class Trick{
     }
 
     public boolean isLastTrick(){
-        return trickNumber == 16;
+        return trickNumber == NUMBER_OF_SUITS * 4;
     }
 
     public int getTrickNumber(){

@@ -6,12 +6,12 @@ import java.util.*;
 
 public class BeloteDemo {
 
-    public static final Suit TRUMP = Suit.SPADES;
+    public static final Suit TRUMP = Suit.DIAMONDS;
+    public static final int NUMBER_OF_SUITS = 1;
 
     public static void main(String[] args) {
-        int numberOfSuits = 2;
 
-        BeloteState beloteState = deal(numberOfSuits);
+        BeloteState beloteState = deal(NUMBER_OF_SUITS);
         TerminalTest terminalTest = new BeloteTerminalTest();
 
         System.out.println(beloteState);
@@ -19,7 +19,7 @@ public class BeloteDemo {
         Search minimaxSearch = new MinimaxSearch(true);
         Map<State, Action> minimaxStrategy = solve(minimaxSearch, terminalTest, beloteState);
 
-        System.out.println("#### Minimax Search on " + numberOfSuits + " suit deck.");
+        System.out.println("#### Minimax Search on " + NUMBER_OF_SUITS + " suit deck.");
         printStats(minimaxSearch, minimaxStrategy);
         System.out.println("Minimax Value for the initial state: " + minimaxSearch.getValue(beloteState));
 
@@ -27,7 +27,7 @@ public class BeloteDemo {
         Search alphaBetaSearch = new AlphaBetaSearch(true);
         Map<State, Action> alphaBetaStrategy = solve(alphaBetaSearch, terminalTest, beloteState);
 
-        System.out.println("#### Alpha-Beta Search on " + numberOfSuits + " suit deck.");
+        System.out.println("#### Alpha-Beta Search on " + NUMBER_OF_SUITS + " suit deck.");
         printStats(alphaBetaSearch, alphaBetaStrategy);
         System.out.println("Minimax Value for the initial state: " + alphaBetaSearch.getValue(beloteState));
 
