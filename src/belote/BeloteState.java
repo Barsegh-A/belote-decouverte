@@ -30,17 +30,6 @@ public class BeloteState implements State {
         this.score = score;
     }
 
-    public BeloteState(BeloteState state){
-        this.player = state.player;
-        this.trick = new Trick(state.trick);
-        this.score = state.score;
-
-        this.unknownCards = state.unknownCards.stream().map(card -> new Card(card)).collect(Collectors.toSet());
-        this.maxHand = state.maxHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toList());
-        this.minHand = state.minHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toList());
-    }
-
-
     @Override
     public Player getPlayer() {
         return player;
