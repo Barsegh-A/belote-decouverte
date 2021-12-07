@@ -61,9 +61,7 @@ public class CardStack {
 
     @Override
     public int hashCode() {
-        // FIXME use appropriate hashcode
-//        return Objects.hash(topCard, bottomCard);
-        return 0;//Objects.hash(topCard, hasCardBelow, bottomCard);
+        return Objects.hash(topCard, bottomCard);
     }
 
     @Override

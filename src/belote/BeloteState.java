@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class BeloteState implements State {
 
-    public static final Suit TRUMP = Suit.DIAMONDS;
+    public static final Suit TRUMP = Suit.CLUBS;
     public static final CardComparator COMPARATOR = new CardComparator();
 
     private final Player player;
@@ -131,7 +131,7 @@ public class BeloteState implements State {
         }
     }
 
-    private List<CardStack> getHand(Player player){
+    public List<CardStack> getHand(Player player){
         List<CardStack> hand = player == Player.MAX ? maxHand : minHand;
         return hand;
     }
@@ -163,15 +163,13 @@ public class BeloteState implements State {
         if (this == o) return true;
         if (!(o instanceof BeloteState)) return false;
         BeloteState that = (BeloteState) o;
-        boolean flag = areTheSame(maxHand, that.maxHand);
 
-        return score == that.score && getPlayer() == that.getPlayer() && flag && areTheSame(minHand, that.minHand) && unknownCards.equals(that.unknownCards) && trick.equals(that.trick);
+        return score == that.score && getPlayer() == that.getPlayer() && areTheSame(maxHand, that.maxHand) && areTheSame(minHand, that.minHand) && trick.equals(that.trick);
     }
 
     @Override
     public int hashCode() {
-        // TODO Consider a better hashCode
-        return Objects.hash(getPlayer(), maxHand, minHand, unknownCards, trick, score);
+        return Objects.hash(getPlayer(), maxHand, minHand, trick, score);
     }
 
     @Override
