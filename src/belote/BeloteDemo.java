@@ -7,7 +7,7 @@ import java.util.*;
 public class BeloteDemo {
 
     public static void main(String[] args) {
-        BeloteState beloteState = deal();
+        BeloteState beloteState = deal(2);
 
         System.out.println(beloteState);
 
@@ -38,8 +38,8 @@ public class BeloteDemo {
     }
 
 
-    public static BeloteState deal() {
-        Deck deck = new Deck();
+    public static BeloteState deal(int numberOfSuits) {
+        Deck deck = new Deck(numberOfSuits);
         deck.shuffle();
 
         Trick trick = new Trick(Player.MAX, 1);
@@ -48,14 +48,14 @@ public class BeloteDemo {
         List<CardStack> minHand = new ArrayList<>();
 
 
-        for (int i = 0; i < 16; i += 4) {
-            Card bottomCard = deck.deck.get(i);
-            Card topCard = deck.deck.get(i + 1);
+        for (int i = 0; i < 8*numberOfSuits; i += 4) {
+            Card bottomCard = deck.getDeck().get(i);
+            Card topCard = deck.getDeck().get(i + 1);
             unknownCards.add(bottomCard);
             CardStack cardStack = new CardStack(topCard, bottomCard);
             maxHand.add(cardStack);
-            bottomCard = deck.deck.get(i + 2);
-            topCard = deck.deck.get(i + 3);
+            bottomCard = deck.getDeck().get(i + 2);
+            topCard = deck.getDeck().get(i + 3);
             unknownCards.add(bottomCard);
             cardStack = new CardStack(topCard, bottomCard);
             minHand.add(cardStack);
