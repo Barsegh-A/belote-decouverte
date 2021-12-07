@@ -37,7 +37,17 @@ public class MinimaxSearch implements Search{
 
 		for(Action a: state.getApplicableActions()){
 			numberOfStates++;
-			int v2 = minValue(state.getActionResult(a), terminalTest, strategy);
+
+			State nextState = state.getActionResult(a);
+			Player nextPlayer = nextState.getPlayer();
+			int v2;
+
+			if(nextPlayer == Player.MAX){
+				v2 = maxValue(nextState, terminalTest, strategy);
+			}else {
+				v2 = minValue(nextState, terminalTest, strategy);
+			}
+
 			if(v2 > v){
 				v = v2;
 				move = a;
@@ -67,7 +77,17 @@ public class MinimaxSearch implements Search{
 
 		for(Action a: state.getApplicableActions()){
 			numberOfStates++;
-			int v2 = maxValue(state.getActionResult(a), terminalTest, strategy);
+
+			State nextState = state.getActionResult(a);
+			Player nextPlayer = nextState.getPlayer();
+			int v2;
+
+			if(nextPlayer == Player.MAX){
+				v2 = maxValue(nextState, terminalTest, strategy);
+			}else {
+				v2 = minValue(nextState, terminalTest, strategy);
+			}
+
 			if(v2 < v){
 				v = v2;
 				move = a;
