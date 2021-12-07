@@ -28,15 +28,17 @@ public class MinimaxSearch implements Search{
 			return minimaxValues.get(state);
 		}
 
+		numberOfStates++;
 		if(terminalTest.isTerminal(state)){
-			return terminalTest.utility(state);
+			int utility = terminalTest.utility(state);
+			minimaxValues.put(state, utility);
+			return utility;
 		}
 
 		int v = Integer.MIN_VALUE;
 		Action move = null;
 
 		for(Action a: state.getApplicableActions()){
-			numberOfStates++;
 
 			State nextState = state.getActionResult(a);
 			Player nextPlayer = nextState.getPlayer();
@@ -68,15 +70,18 @@ public class MinimaxSearch implements Search{
 			return minimaxValues.get(state);
 		}
 
+		numberOfStates++;
 		if(terminalTest.isTerminal(state)) {
-			return terminalTest.utility(state);
+			int utility = terminalTest.utility(state);
+			minimaxValues.put(state, utility);
+			return utility;
 		}
 
 		int v = Integer.MAX_VALUE;
 		Action move = null;
 
 		for(Action a: state.getApplicableActions()){
-			numberOfStates++;
+
 
 			State nextState = state.getActionResult(a);
 			Player nextPlayer = nextState.getPlayer();
