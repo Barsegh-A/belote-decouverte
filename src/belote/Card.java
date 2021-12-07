@@ -25,9 +25,7 @@ public class Card implements Action {
     }
 
     public Card(Card card1){
-        this(card1.suit, card1.type);
-        this.isTrump = card1.isTrump;
-        this.value = card1.value;
+        this(card1.suit, card1.type, card1.isTrump);
     }
 
     @Override
