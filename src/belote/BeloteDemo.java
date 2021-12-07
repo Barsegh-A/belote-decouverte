@@ -7,16 +7,16 @@ import java.util.*;
 public class BeloteDemo {
 
     public static void main(String[] args) {
-        BeloteState beloteState = deal(2);
+        BeloteState beloteState = deal(3);
 
         System.out.println(beloteState);
 
         TerminalTest terminalTest = new BeloteTerminalTest();
         Search search = new MinimaxSearch(true);
         Search alphaBeta = new AlphaBetaSearch(true);
-        Map<State, Action> strategy = search.findStrategy(beloteState, terminalTest);
+        Map<State, Action> strategy = alphaBeta.findStrategy(beloteState, terminalTest);
 
-        System.out.println(search.getNumberOfStates());
+        System.out.println(alphaBeta.getNumberOfStates());
         System.out.println(strategy.keySet().size());
 
         // A-B Non-Opt, 16

@@ -32,7 +32,9 @@ public class AlphaBetaSearch implements Search{
 		numberOfStates++;
 
 		if(terminalTest.isTerminal(state)){
-			return terminalTest.utility(state);
+			int utility = terminalTest.utility(state);
+			minimaxValues.put(state, utility);
+			return utility;
 		}
 
 		int v = Integer.MIN_VALUE;
@@ -76,7 +78,9 @@ public class AlphaBetaSearch implements Search{
 		numberOfStates++;
 
 		if(terminalTest.isTerminal(state)) {
-			return terminalTest.utility(state);
+			int utility = terminalTest.utility(state);
+			minimaxValues.put(state, utility);
+			return utility;
 		}
 
 		int v = Integer.MAX_VALUE;
