@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class MinimaxSearch implements Search{
 	private int numberOfStates = 0;
-	Map<State, Integer> minimaxValues;
+	private Map<State, Integer> minimaxValues;
 	private boolean isOptimized;
 
 	public MinimaxSearch(){
@@ -110,5 +110,9 @@ public class MinimaxSearch implements Search{
 
 	public int getNumberOfStates(){
 		return numberOfStates;
+	}
+
+	public int getValue(State state){
+		return minimaxValues.get(state);
 	}
 }

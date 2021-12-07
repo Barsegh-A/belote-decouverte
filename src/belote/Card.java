@@ -11,17 +11,21 @@ public class Card implements Action {
     private boolean isTrump;
     private int value;
 
-    // TODO handle the case of trumps suit
     public Card(Suit suit, CardType type) {
         this.suit = suit;
         this.type = type;
         this.value = type.noTrumpValue;
     }
 
+    public Card(Suit suit, CardType type, boolean isTrump) {
+        this.suit = suit;
+        this.type = type;
+        this.isTrump = isTrump;
+        this.value = isTrump ? type.trumpValue : type.noTrumpValue;
+    }
+
     public Card(Card card1){
-        this(card1.suit, card1.type);
-        this.isTrump = card1.isTrump;
-        this.value = card1.value;
+        this(card1.suit, card1.type, card1.isTrump);
     }
 
     @Override

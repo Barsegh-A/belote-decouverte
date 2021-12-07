@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static belote.BeloteDemo.TRUMP;
+
 public class Deck {
-    private final int SEED = 1;
+    private final int SEED = 13;
 
     private int numberOfSuites;
     private ArrayList<Card> deck = new ArrayList<>();
@@ -21,11 +23,13 @@ public class Deck {
 
         this.numberOfSuites = numberOfSuites;
 
-        List<Suit> suits = List.of(Suit.values());
+        List<Suit> suits = List.of(Suit.values()); //[DIAMONDS, CLUBS, HEARTS, SPADES]
 
         for(int i = 0; i < numberOfSuites; i++){
+            Suit suit = suits.get(i);
+            boolean isTrump = suit == TRUMP;
             for(CardType t: CardType.values()){
-                Card card = new Card(suits.get(i), t);
+                Card card = new Card(suit, t, isTrump);
                 deck.add(card);
             }
         }
