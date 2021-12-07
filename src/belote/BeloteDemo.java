@@ -8,20 +8,32 @@ public class BeloteDemo {
 
     public static void main(String[] args) {
         BeloteState beloteState = deal();
-        Action a = beloteState.getApplicableActions().iterator().next();
 
-        while(a != null){
+        System.out.println(beloteState);
+
+        TerminalTest terminalTest = new BeloteTerminalTest();
+        Search search = new MinimaxSearch(false);
+        Search alphaBeta = new AlphaBetaSearch(true);
+        Map<State, Action> strategy = alphaBeta.findStrategy(beloteState, terminalTest);
+
+        System.out.println(alphaBeta.getNumberOfStates());
+        System.out.println(strategy.keySet().size());
+
+        // A-B Non-Opt, 16
+        //45238
+        //4738
+
+        // A-B Opt, 16
+        //5958
+        //5622
+        while (!terminalTest.isTerminal(beloteState)){
+            Action a = strategy.get(beloteState);
+            System.out.println(beloteState.getPlayer() + ": " + a);
             beloteState = (BeloteState) beloteState.getActionResult(a);
-            a = beloteState.getApplicableActions().iterator().next();
         }
 
+        System.out.println(beloteState.getScore());
 
-//        TerminalTest terminalTest = new BeloteTerminalTest();
-//        Search search = new MinimaxSearch(false);
-//        Search alphaBeta = new AlphaBetaSearch(false);
-//        Map<State, Action> strategy = search.findStrategy(beloteState, terminalTest);
-//
-//        System.out.println(alphaBeta.getNumberOfStates());
 
     }
 
@@ -36,7 +48,7 @@ public class BeloteDemo {
         List<CardStack> minHand = new ArrayList<>();
 
 
-        for (int i = 0; i < 8; i += 4) {
+        for (int i = 0; i < 16; i += 4) {
             Card bottomCard = deck.deck.get(i);
             Card topCard = deck.deck.get(i + 1);
             unknownCards.add(bottomCard);
