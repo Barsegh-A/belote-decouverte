@@ -3,11 +3,14 @@ package belote;
 import game.State;
 import game.TerminalTest;
 
-import static belote.BeloteDemo.NUMBER_OF_SUITS;
+import static belote.Constants.NUMBER_OF_SUITS;
+
 
 public class BeloteTerminalTest extends TerminalTest {
 
     private boolean winLose;
+
+    private boolean applyForwardPruning = true;
 
     public BeloteTerminalTest(){}
 
@@ -29,6 +32,22 @@ public class BeloteTerminalTest extends TerminalTest {
                 int result = madeContract ? beloteState.getScore() : 0;
                 utilities.put(state, result);
             }
+        }
+
+        if(applyForwardPruning){ //forward pruning
+			int threshold = 20 + NUMBER_OF_SUITS * 15;
+			boolean contractNotMade = beloteState.getMinPoints() > threshold + 2;
+			if(contractNotMade){
+				isTerminal = true;
+				utilities.put(state, 0);
+			}
+
+			if(winLose){
+				if(beloteState.getScore() >= threshold){
+					utilities.put(state, 1);
+					isTerminal = true;
+				}
+			}
         }
 
         return isTerminal;

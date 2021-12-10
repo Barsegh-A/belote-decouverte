@@ -4,42 +4,44 @@ import game.*;
 
 import java.util.*;
 
-public class BeloteDemo {
+import static belote.Constants.NUMBER_OF_SUITS;
+import static belote.Constants.WIN_LOSE;
 
-    public static final Suit TRUMP = Suit.DIAMONDS;
-    public static final int NUMBER_OF_SUITS = 1;
+public class BeloteDemo {
 
     public static void main(String[] args) {
 
         BeloteState beloteState = deal(NUMBER_OF_SUITS);
-        TerminalTest terminalTest = new BeloteTerminalTest(false);
+        TerminalTest terminalTest = new BeloteTerminalTest(WIN_LOSE);
+
+
+        Search minimaxSearch = new MinimaxSearch();
+        Search alphaBetaSearch = new AlphaBetaSearch();
+        BelotePrinting printing = new BelotePrinting();
 
         System.out.println(beloteState);
 
-        Search minimaxSearch = new MinimaxSearch(true);
+
         Map<State, Action> minimaxStrategy = solve(minimaxSearch, terminalTest, beloteState);
 
+        System.out.println();
         System.out.println("#### Minimax Search on " + NUMBER_OF_SUITS + " suit deck.");
         printStats(minimaxSearch, minimaxStrategy);
         System.out.println("Minimax Value for the initial state: " + minimaxSearch.getValue(beloteState));
+        System.out.println("Average Branching Factor: " + minimaxSearch.getAverageBranchingFactor());
 
-
-        Search alphaBetaSearch = new AlphaBetaSearch(true);
         Map<State, Action> alphaBetaStrategy = solve(alphaBetaSearch, terminalTest, beloteState);
 
+        System.out.println();
         System.out.println("#### Alpha-Beta Search on " + NUMBER_OF_SUITS + " suit deck.");
         printStats(alphaBetaSearch, alphaBetaStrategy);
         System.out.println("Minimax Value for the initial state: " + alphaBetaSearch.getValue(beloteState));
+        System.out.println("Average Branching Factor: " + alphaBetaSearch.getAverageBranchingFactor());
 
-        /*
-        while (!terminalTest.isTerminal(beloteState)){
-            Action a = alphaBetaStrategy.get(beloteState);
-            System.out.println(beloteState.getPlayer() + ": " + a);
-            beloteState = (BeloteState) beloteState.getActionResult(a);
-        }
+        System.out.println();
+        System.out.println("A sequence of actions for a game when MIN and MAX play optimally:");
+        printing.printOptimalPlay(beloteState, terminalTest, alphaBetaStrategy);
 
-        System.out.println(beloteState.getScore());
-        */
 
     }
 
@@ -57,7 +59,6 @@ public class BeloteDemo {
         deck.shuffle();
 
         Trick trick = new Trick(Player.MAX, 1);
-        Set<Card> unknownCards = new HashSet<>();
         List<CardStack> maxHand = new ArrayList<>();
         List<CardStack> minHand = new ArrayList<>();
 
@@ -65,17 +66,15 @@ public class BeloteDemo {
         for (int i = 0; i < 8*numberOfSuits; i += 4) {
             Card bottomCard = deck.getDeck().get(i);
             Card topCard = deck.getDeck().get(i + 1);
-            unknownCards.add(bottomCard);
             CardStack cardStack = new CardStack(topCard, bottomCard);
             maxHand.add(cardStack);
             bottomCard = deck.getDeck().get(i + 2);
             topCard = deck.getDeck().get(i + 3);
-            unknownCards.add(bottomCard);
             cardStack = new CardStack(topCard, bottomCard);
             minHand.add(cardStack);
         }
 
-        BeloteState beloteState = new BeloteState(Player.MAX, maxHand, minHand, unknownCards, trick, 0);
+        BeloteState beloteState = new BeloteState(Player.MAX, maxHand, minHand, trick, 0, 0);
 
         return beloteState;
     }

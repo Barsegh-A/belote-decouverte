@@ -4,10 +4,10 @@ public enum CardType {
     SEVEN(0, 0, 0, 0),
     EIGHT(1, 1, 0, 0),
     NINE(6, 2, 14, 0),
-    TEN(4, 3, 10, 10),
-    JACK(7, 4, 20, 2),
-    QUEEN(2, 5, 3, 3),
-    KING(3, 6, 4, 4),
+    TEN(4, 6, 10, 10),
+    JACK(7, 3, 20, 2),
+    QUEEN(2, 4, 3, 3),
+    KING(3, 5, 4, 4),
     ACE(5, 7, 11, 11);
 
     public int trumpOrder;

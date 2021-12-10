@@ -2,11 +2,16 @@ package game;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class MinimaxSearch implements Search{
 	private int numberOfStates = 0;
 	private Map<State, Integer> minimaxValues;
 	private boolean isOptimized;
+
+	// temp
+	private float branchingFactor = 0;
+	private int counter;
 
 	public MinimaxSearch(){
 		this(true);
@@ -38,7 +43,12 @@ public class MinimaxSearch implements Search{
 		int v = Integer.MIN_VALUE;
 		Action move = null;
 
-		for(Action a: state.getApplicableActions()){
+		Set<Action> actions = state.getApplicableActions();
+
+		branchingFactor += actions.size();
+		counter++;
+
+		for(Action a: actions){
 
 			State nextState = state.getActionResult(a);
 			Player nextPlayer = nextState.getPlayer();
@@ -80,7 +90,12 @@ public class MinimaxSearch implements Search{
 		int v = Integer.MAX_VALUE;
 		Action move = null;
 
-		for(Action a: state.getApplicableActions()){
+		Set<Action> actions = state.getApplicableActions();
+
+		branchingFactor += actions.size();
+		counter++;
+
+		for(Action a: actions){
 
 
 			State nextState = state.getActionResult(a);
@@ -114,5 +129,9 @@ public class MinimaxSearch implements Search{
 
 	public int getValue(State state){
 		return minimaxValues.get(state);
+	}
+
+	public float getAverageBranchingFactor(){
+		return branchingFactor / counter;
 	}
 }

@@ -1,0 +1,239 @@
+SEED = 32
+
+Suits : 1
+WIN_LOSE : false
+FP: false
+
+#### Minimax Search on 1 suit deck.
+Number of states generated during execution: 95
+Number of states in strategy: 88
+Minimax Value for the initial state: 38
+Average Branching Factor: 1.2727273
+
+#### Alpha-Beta Search on 1 suit deck.
+Number of states generated during execution: 85
+Number of states in strategy: 78
+Minimax Value for the initial state: 38
+Average Branching Factor: 1.2948718
+
+Suits : 1
+WIN_LOSE : true
+FP: false
+
+#### Minimax Search on 1 suit deck.
+Number of states generated during execution: 95
+Number of states in strategy: 88
+Minimax Value for the initial state: 1
+Average Branching Factor: 1.2727273
+
+#### Alpha-Beta Search on 1 suit deck.
+Number of states generated during execution: 66
+Number of states in strategy: 60
+Minimax Value for the initial state: 1
+Average Branching Factor: 1.35
+
+Suits : 2
+WIN_LOSE : false
+FP: false
+
+#### Minimax Search on 2 suit deck.
+Number of states generated during execution: 9237
+Number of states in strategy: 9194
+Minimax Value for the initial state: 55
+Average Branching Factor: 1.7324342
+
+#### Alpha-Beta Search on 2 suit deck.
+Number of states generated during execution: 1695
+Number of states in strategy: 1669
+Minimax Value for the initial state: 55
+Average Branching Factor: 1.7411624
+
+Suits : 2
+WIN_LOSE : true
+FP: false
+
+#### Minimax Search on 2 suit deck.
+Number of states generated during execution: 9237
+Number of states in strategy: 9194
+Minimax Value for the initial state: 1
+Average Branching Factor: 1.7324342
+
+#### Alpha-Beta Search on 2 suit deck.
+Number of states generated during execution: 1213
+Number of states in strategy: 1189
+Minimax Value for the initial state: 1
+Average Branching Factor: 1.7089992
+
+Suits : 3
+WIN_LOSE : false
+FP: false
+
+#### Minimax Search on 3 suit deck.
+Number of states generated during execution: 2888655
+Number of states in strategy: 2888484
+Minimax Value for the initial state: 77
+Average Branching Factor: 2.0064244
+
+#### Alpha-Beta Search on 3 suit deck.
+Number of states generated during execution: 404538
+Number of states in strategy: 404373
+Minimax Value for the initial state: 77
+Average Branching Factor: 2.1477993
+
+Suits : 3
+WIN_LOSE : true
+FP: false
+
+#### Minimax Search on 3 suit deck.
+Number of states generated during execution: 2888655
+Number of states in strategy: 2888484
+Minimax Value for the initial state: 1
+Average Branching Factor: 2.0064244
+
+#### Alpha-Beta Search on 3 suit deck.
+Number of states generated during execution: 77731
+Number of states in strategy: 77571
+Minimax Value for the initial state: 1
+Average Branching Factor: 2.2368798
+
+Suits : 4
+WIN_LOSE : false
+FP: false
+
+#### Minimax Search on 4 suit deck.
+NA
+
+#### Alpha-Beta Search on 4 suit deck.
+NA
+
+Suits : 4
+WIN_LOSE : true
+FP: false
+
+#### Minimax Search on 4 suit deck.
+NA
+
+#### Alpha-Beta Search on 4 suit deck.
+Number of states generated during execution: 4066474
+Number of states in strategy: 4066288
+Minimax Value for the initial state: 1
+Average Branching Factor: 2.2717113
+
+Suits : 1
+WIN_LOSE : false
+FP: true
+
+#### Minimax Search on 1 suit deck.
+Number of states generated during execution: 95
+Number of states in strategy: 88
+Minimax Value for the initial state: 38
+Average Branching Factor: 1.2727273
+
+#### Alpha-Beta Search on 1 suit deck.
+Number of states generated during execution: 85
+Number of states in strategy: 78
+Minimax Value for the initial state: 38
+Average Branching Factor: 1.2948718
+
+Suits : 1
+WIN_LOSE : true
+FP: true
+
+#### Minimax Search on 1 suit deck.
+Number of states generated during execution: 58
+Number of states in strategy: 43
+Minimax Value for the initial state: 1
+Average Branching Factor: 1.4418604
+
+#### Alpha-Beta Search on 1 suit deck.
+Number of states generated during execution: 43
+Number of states in strategy: 33
+Minimax Value for the initial state: 1
+Average Branching Factor: 1.4848485
+
+Suits : 2
+WIN_LOSE : false
+FP: true
+
+#### Minimax Search on 2 suit deck.
+Number of states generated during execution: 9234
+Number of states in strategy: 9190
+Minimax Value for the initial state: 55
+Average Branching Factor: 1.732753
+
+#### Alpha-Beta Search on 2 suit deck.
+Number of states generated during execution: 1695
+Number of states in strategy: 1669
+Minimax Value for the initial state: 55
+Average Branching Factor: 1.7411624
+
+Suits : 2
+WIN_LOSE : true
+FP: true
+
+#### Minimax Search on 2 suit deck.
+Number of states generated during execution: 6883
+Number of states in strategy: 6582
+Minimax Value for the initial state: 1
+Average Branching Factor: 1.7461258
+
+#### Alpha-Beta Search on 2 suit deck.
+Number of states generated during execution: 867
+Number of states in strategy: 822
+Minimax Value for the initial state: 1
+Average Branching Factor: 1.7603407
+
+Suits : 3
+WIN_LOSE : false
+FP: true
+
+#### Minimax Search on 3 suit deck.
+Number of states generated during execution: 2877216
+Number of states in strategy: 2874116
+Minimax Value for the initial state: 77
+Average Branching Factor: 2.0087345
+
+#### Alpha-Beta Search on 3 suit deck.
+Number of states generated during execution: 403285
+Number of states in strategy: 402594
+Minimax Value for the initial state: 77
+Average Branching Factor: 2.1516142
+
+Suits : 3
+WIN_LOSE : true
+FP: true
+
+#### Minimax Search on 3 suit deck.
+Number of states generated during execution: 2475804
+Number of states in strategy: 2417579
+Minimax Value for the initial state: 1
+Average Branching Factor: 2.0361366
+
+#### Alpha-Beta Search on 3 suit deck.
+Number of states generated during execution: 59335
+Number of states in strategy: 56173
+Minimax Value for the initial state: 1
+Average Branching Factor: 2.347124
+
+Suits : 4
+WIN_LOSE : false
+FP: true
+
+#### Minimax Search on 4 suit deck.
+NA
+
+#### Alpha-Beta Search on 4 suit deck.
+NA
+
+Suits : 4
+WIN_LOSE : true
+FP: true
+
+#### Minimax Search on 4 suit deck.
+NA
+
+#### Alpha-Beta Search on 4 suit deck.
+Number of states generated during execution: 3669142
+Number of states in strategy: 3595930
+Minimax Value for the initial state: 1
+Average Branching Factor: 2.301715

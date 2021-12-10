@@ -4,8 +4,8 @@ import game.Player;
 
 import java.util.Objects;
 
-import static belote.BeloteDemo.NUMBER_OF_SUITS;
 import static belote.BeloteState.COMPARATOR;
+import static belote.Constants.NUMBER_OF_SUITS;
 
 public class Trick{
 
@@ -121,17 +121,4 @@ public class Trick{
                 '}';
     }
 
-    public static void main(String[] args) {
-        Trick t1 = new Trick(Player.MIN, 1);
-        t1.play(Player.MIN, new Card(Suit.CLUBS, CardType.JACK));
-        t1.play(Player.MAX, new Card(Suit.DIAMONDS, CardType.JACK));
-        Trick t2 = new Trick(Player.MIN, 1);
-        t2.play(Player.MIN, new Card(Suit.CLUBS, CardType.JACK));
-        t2.play(Player.MAX, new Card(Suit.HEARTS, CardType.JACK));
-
-        System.out.println(t1.hashCode());
-        System.out.println(t2.hashCode());
-        System.out.println(t1.equals(t2));
-
-    }
 }

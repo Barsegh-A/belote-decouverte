@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static belote.BeloteDemo.TRUMP;
+import static belote.Constants.TRUMP;
+
 
 public class Deck {
     private final int SEED = 32;

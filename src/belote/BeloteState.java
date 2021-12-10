@@ -7,7 +7,7 @@ import game.State;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static belote.BeloteDemo.TRUMP;
+import static belote.Constants.TRUMP;
 
 public class BeloteState implements State {
     public static final CardComparator COMPARATOR = new CardComparator();
@@ -16,18 +16,18 @@ public class BeloteState implements State {
 
     private final List<CardStack> maxHand;
     private final List<CardStack> minHand;
-    private final Set<Card> unknownCards;
     private final Trick trick;
     private final int score;
 
+    private final int minPoints;
 
-    public BeloteState(Player player, List<CardStack> maxHand, List<CardStack> minHand, Set<Card> unknownCards, Trick trick, int score) {
+    public BeloteState(Player player, List<CardStack> maxHand, List<CardStack> minHand, Trick trick, int score, int minPoints) {
         this.player = player;
         this.maxHand = maxHand;
         this.minHand = minHand;
-        this.unknownCards = unknownCards;
         this.trick = trick;
         this.score = score;
+        this.minPoints = minPoints;
     }
 
     @Override
@@ -83,39 +83,38 @@ public class BeloteState implements State {
     public State getActionResult(Action action) {
 
         Trick newTrick = new Trick(trick);
-        Set<Card> newUnknownCards = unknownCards.stream().map(card -> new Card(card)).collect(Collectors.toSet());
         List<CardStack> newMaxHand = maxHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toList());
         List<CardStack> newMinHand = minHand.stream().map(cardStack -> new CardStack(cardStack)).collect(Collectors.toList());
 
         List<CardStack> currentPlayerHand = player == Player.MAX ? newMaxHand : newMinHand;
 
-        // TODO consider a better way to find from which card stack to play
+        // Find from which CardStack is the given Card
         CardStack cs = currentPlayerHand.stream().filter(cardStack -> {
             Card card = cardStack.getCard();
             boolean bool = Objects.equals(card, action);
             return bool;
         }).collect(Collectors.toList()).get(0);
 
-        Card newCard = cs.takeCard();
-        newUnknownCards.remove(newCard);
+        cs.takeCard();
 
         BeloteState beloteState;
 
         if(newTrick.isEmpty()){
             newTrick.play(player, (Card) action);
             if(player == Player.MAX){
-                beloteState = new BeloteState(Player.MIN, newMaxHand, newMinHand, newUnknownCards, newTrick, score);
+                beloteState = new BeloteState(Player.MIN, newMaxHand, newMinHand, newTrick, score, minPoints);
                 return beloteState;
             } else {
-                beloteState = new BeloteState(Player.MAX, newMaxHand, newMinHand, newUnknownCards, newTrick, score);
+                beloteState = new BeloteState(Player.MAX, newMaxHand, newMinHand, newTrick, score, minPoints);
                 return beloteState;
             }
         } else {
             newTrick.play(player, (Card) action);
             Player lead = newTrick.getWinner();
             int newScore = lead == Player.MAX ? score + newTrick.getScore() : score;
+            int newMinScore = lead == Player.MIN ? minPoints + newTrick.getScore() : minPoints;
 
-            beloteState = new BeloteState(lead, newMaxHand, newMinHand, newUnknownCards, new Trick(lead, newTrick.getTrickNumber() + 1), newScore);
+            beloteState = new BeloteState(lead, newMaxHand, newMinHand, new Trick(lead, newTrick.getTrickNumber() + 1), newScore, newMinScore);
             return beloteState;
         }
     }
@@ -147,6 +146,10 @@ public class BeloteState implements State {
         return score;
     }
 
+    public int getMinPoints(){
+        return minPoints;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -167,15 +170,13 @@ public class BeloteState implements State {
                 "player=" + player +
                 ", maxHand=" + maxHand +
                 ", minHand=" + minHand +
-                ", unknownCards=" + unknownCards +
                 ", trick=" + trick +
-                ", score=" + score +
+                ", MAX Points=" + score +
+                ", MIN Points=" + minPoints +
                 '}';
     }
 
     private static boolean areTheSame(List<CardStack> l1, List<CardStack> l2){
-
-
         Set<CardStack> s1 = l1.stream().filter(cardStack -> !cardStack.isEmpty()).collect(Collectors.toSet());
         Set<CardStack> s2 = l2.stream().filter(cardStack -> !cardStack.isEmpty()).collect(Collectors.toSet());
 
@@ -191,22 +192,6 @@ public class BeloteState implements State {
         }
 
         return s2.isEmpty();
-    }
-
-
-    public static void main(String[] args) {
-        CardStack cs1 = new CardStack(new Card(Suit.CLUBS, CardType.SEVEN), new Card(Suit.CLUBS, CardType.EIGHT));
-        CardStack cs2 = new CardStack(new Card(Suit.CLUBS, CardType.NINE), new Card(Suit.CLUBS, CardType.TEN));
-        CardStack cs5 = new CardStack(null, null);
-
-        List<CardStack> l1 = List.of(cs1, cs2, cs5);
-
-        CardStack cs3 = new CardStack(new Card(Suit.CLUBS, CardType.SEVEN), new Card(Suit.CLUBS, CardType.EIGHT));
-        CardStack cs4 = new CardStack(new Card(Suit.CLUBS, CardType.NINE), new Card(Suit.CLUBS, CardType.TEN));
-
-        List<CardStack> l2 = List.of(cs4, cs3);
-
-        System.out.println(areTheSame(l1, l2));
     }
 
 }
