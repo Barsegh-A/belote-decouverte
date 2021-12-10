@@ -11,18 +11,15 @@ public class AlphaBetaSearch implements Search{
 
 	private boolean useGraphSearch;
 
-	private boolean applyForwardPruning;
-
 	private float branchingFactor = 0;
 	private int counter;
 
 	public AlphaBetaSearch(){
-		this(true, true);
+		this(true);
 	}
 
-	public AlphaBetaSearch(boolean useGraphSearch, boolean applyForwardPruning){
+	public AlphaBetaSearch(boolean useGraphSearch){
 		this.useGraphSearch = useGraphSearch;
-		this.applyForwardPruning = applyForwardPruning;
 	}
 
 	public Map<State, Action> findStrategy(State initialState, TerminalTest terminalTest) {

@@ -31,7 +31,8 @@ determined, a new state is created with corresponding changes of players' hands,
 resulting state.
 - BeloteTerminalTest extends TerminalTest and implements the notion of a terminal state in Belote. A BeloteState is
 terminal, if both players have played all their cards. The utility of a terminal state is implemented as described in
-paper with two versions - the score and win/lose.
+paper with two versions - the score and win/lose. Furthermore, the logic of forward pruning is implemented as well.
+Details can be found in comments.
 - Deck class is used to generate cards given the number of suits(1-4). The shuffle method is used to shuffle the deck.
 Note that we set trumps cards at the moment they are created based on the fixed trump.
 - BelotePrinting extends the abstract Printing class.
@@ -44,4 +45,5 @@ Initial state is printed as well as some statistics for each algorithm and final
 strategy returned by AlphaBetaSearch.
 
 
+Finally, to run the demo, corresponding values should be given to the number of suits, win/lose, forward pruning in Constants.
 

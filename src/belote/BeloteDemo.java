@@ -4,15 +4,13 @@ import game.*;
 
 import java.util.*;
 
-import static belote.Constants.NUMBER_OF_SUITS;
-import static belote.Constants.WIN_LOSE;
+import static belote.Constants.*;
 
 public class BeloteDemo {
 
     public static void main(String[] args) {
 
         BeloteState beloteState = deal(NUMBER_OF_SUITS);
-        TerminalTest terminalTest = new BeloteTerminalTest(WIN_LOSE);
 
 
         Search minimaxSearch = new MinimaxSearch();
@@ -21,8 +19,8 @@ public class BeloteDemo {
 
         System.out.println(beloteState);
 
-
-        Map<State, Action> minimaxStrategy = solve(minimaxSearch, terminalTest, beloteState);
+        TerminalTest terminalTest1 = new BeloteTerminalTest(WIN_LOSE, USE_FORWARD_PRUNING);
+        Map<State, Action> minimaxStrategy = solve(minimaxSearch, terminalTest1, beloteState);
 
         System.out.println();
         System.out.println("#### Minimax Search on " + NUMBER_OF_SUITS + " suit deck.");
@@ -30,7 +28,8 @@ public class BeloteDemo {
         System.out.println("Minimax Value for the initial state: " + minimaxSearch.getValue(beloteState));
         System.out.println("Average Branching Factor: " + minimaxSearch.getAverageBranchingFactor());
 
-        Map<State, Action> alphaBetaStrategy = solve(alphaBetaSearch, terminalTest, beloteState);
+        TerminalTest terminalTest2 = new BeloteTerminalTest(WIN_LOSE, USE_FORWARD_PRUNING);
+        Map<State, Action> alphaBetaStrategy = solve(alphaBetaSearch, terminalTest2, beloteState);
 
         System.out.println();
         System.out.println("#### Alpha-Beta Search on " + NUMBER_OF_SUITS + " suit deck.");
@@ -40,7 +39,7 @@ public class BeloteDemo {
 
         System.out.println();
         System.out.println("A sequence of actions for a game when MIN and MAX play optimally:");
-        printing.printOptimalPlay(beloteState, terminalTest, alphaBetaStrategy);
+        printing.printOptimalPlay(beloteState, terminalTest2, alphaBetaStrategy);
 
 
     }

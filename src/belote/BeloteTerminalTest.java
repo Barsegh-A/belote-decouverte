@@ -3,19 +3,19 @@ package belote;
 import game.State;
 import game.TerminalTest;
 
-import static belote.Constants.NUMBER_OF_SUITS;
+import static belote.Constants.THRESHOLD;
 
 
 public class BeloteTerminalTest extends TerminalTest {
 
     private boolean winLose;
-
-    private boolean applyForwardPruning = true;
+    private boolean applyForwardPruning;
 
     public BeloteTerminalTest(){}
 
-    public BeloteTerminalTest(boolean winLose){
+    public BeloteTerminalTest(boolean winLose, boolean applyForwardPruning){
         this.winLose = winLose;
+        this.applyForwardPruning = applyForwardPruning;
     }
 
     @Override
@@ -23,8 +23,7 @@ public class BeloteTerminalTest extends TerminalTest {
         BeloteState beloteState = (BeloteState) state;
         boolean isTerminal = beloteState.getApplicableActions().isEmpty();
         if(isTerminal){
-            int threshold = 20 + NUMBER_OF_SUITS * 15;
-            boolean madeContract =  beloteState.getScore() >= threshold;
+            boolean madeContract =  beloteState.getScore() >= THRESHOLD;
             if(winLose){
                 int result = madeContract ? 1 : 0;
                 utilities.put(state, result);
@@ -34,16 +33,17 @@ public class BeloteTerminalTest extends TerminalTest {
             }
         }
 
-        if(applyForwardPruning){ //forward pruning
-			int threshold = 20 + NUMBER_OF_SUITS * 15;
-			boolean contractNotMade = beloteState.getMinPoints() > threshold + 2;
+        if(applyForwardPruning){
+			boolean contractNotMade = beloteState.getMinPoints() > THRESHOLD + 2;
+			// if Max does not make the contract, Min gets all point in both cases of utilities
 			if(contractNotMade){
 				isTerminal = true;
 				utilities.put(state, 0);
 			}
 
+			// moreover, in case of Win/Lose, pruning is done when Max has already won more points than the thershold
 			if(winLose){
-				if(beloteState.getScore() >= threshold){
+				if(beloteState.getScore() >= THRESHOLD){
 					utilities.put(state, 1);
 					isTerminal = true;
 				}
