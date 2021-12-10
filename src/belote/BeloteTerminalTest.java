@@ -41,7 +41,7 @@ public class BeloteTerminalTest extends TerminalTest {
 				utilities.put(state, 0);
 			}
 
-			// moreover, in case of Win/Lose, pruning is done when Max has already won more points than the thershold
+			// moreover, in case of Win/Lose, pruning is done when Max has already won more points than the threshold
 			if(winLose){
 				if(beloteState.getScore() >= THRESHOLD){
 					utilities.put(state, 1);

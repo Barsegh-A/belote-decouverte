@@ -1,7 +1,7 @@
 The code consist of two packages.
 Game package contains the same components as used in Homework 6.
 A method is added to the abstract class Printing that prints the course of the game given the initial state, a terminal
-test and the strategy(assuming both players play optimally).
+test and the strategy (assuming both players play optimally).
 A method called getAverageBranchingFactor is added to the Search interface and it is implemented in both MinimaxSearch
 and AlphaBetaSearch.
 MinimaxSearch and AlphaBetaSearch classes implement corresponding tree and graph search algorithms. In demos, only
@@ -24,7 +24,7 @@ be found in the comments for each if statement.
 - BeloteState implements the State interface and represents the notion of the state described in the paper. It includes
 the hands of Max and Min players, the trick, the player to play and the current score(points won by Max). Additionally,
 we store the points won by Min player as well to easily implement Forward Pruning. getApplicableActions is implemented
-following the game rules. More details can be found in the comments. In getActionResult, first the cars stack is found
+following the game rules. More details can be found in the comments. In getActionResult, first the card stack is found
 from which the selected card should be played. Then if it is the action of the lead player, a new state is created with
 corresponding changes of lead's hand and the trick. If after an action trick becomes full, the winner of the trick is
 determined, a new state is created with corresponding changes of players' hands, score. New trick is created for the
@@ -44,6 +44,8 @@ MinimaxSearch and AlphaBetaSeacrh are created based on the specified constants. 
 Initial state is printed as well as some statistics for each algorithm and finally the optimal play determined by the
 strategy returned by AlphaBetaSearch.
 
+Also, all classes that are used in BeloteState and BeloteState itself hashCode and equals methods are implemented
+correspondingly.
 
 Finally, to run the demo, corresponding values should be given to the number of suits, win/lose, forward pruning in Constants.
 
