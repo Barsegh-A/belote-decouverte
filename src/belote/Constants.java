@@ -4,7 +4,7 @@ public class Constants {
 
     public static final Suit TRUMP = Suit.DIAMONDS;
 
-    public static final int NUMBER_OF_SUITS = 4;
+    public static final int NUMBER_OF_SUITS = 2;
     public static final boolean WIN_LOSE = true;
     public static final boolean USE_FORWARD_PRUNING = true;
 
